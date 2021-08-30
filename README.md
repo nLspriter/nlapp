@@ -1,6 +1,6 @@
-# nlapp
+# newLEGACYinc App
 
-Cross-platform solution for the newLEGACYinc App
+Cross-platform solution for the newLEGACYinc App.
 
 ## Getting Started
 

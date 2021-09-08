@@ -1,19 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:nlapp/routes/routes.dart';
 import 'package:nlapp/feedsview.dart';
-import 'settingsview.dart';
+import 'package:nlapp/settingsview.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+    if (await canLaunch(message.data['url']))
+      await launch(message.data['url']);
+    else
+      throw "Could not launch ";
+  });
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
   runApp(MyApp());
+  FirebaseMessaging.instance.getInitialMessage().then((message) async {
+    if (await canLaunch(message!.data['url']))
+      await launch(message.data['url']);
+    else
+      throw "Could not launch ";
+    }
+  );
 }
 
 class MyApp extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Navigation Drawer Demo',
+      title: 'newLEGACYinc App',
       theme: _createTheme(),
       themeMode: ThemeMode.system,
+      darkTheme: _createThemeDark(),
       home: FeedsView(),
       routes: {
         routes.feeds: (context) => FeedsView(),
@@ -29,6 +59,16 @@ ThemeData _createTheme() {
     primaryColor: Color(0xFF162955),
     accentColor: Color(0xFF4F628E),
     canvasColor: Colors.white,
+    fontFamily: 'Sans-serif',
+  );
+}
+
+ThemeData _createThemeDark() {
+  return ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Color(0xFF4F628E),
+    accentColor: Color(0xFF4F628E),
+    canvasColor: Colors.grey[900],
     fontFamily: 'Sans-serif',
   );
 }

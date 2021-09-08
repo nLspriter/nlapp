@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'drawer.dart';
+import 'feeditems.dart';
 
 class FeedsView extends StatelessWidget {
   static const String routeName = '/feeds';
-
 
 
   @override
@@ -13,6 +13,7 @@ class FeedsView extends StatelessWidget {
             appBar: AppBar(
               title: const Text('Feeds'),
             ),
+            body: FeedItems(),
             drawer: createDrawer(context)
         ));
   }

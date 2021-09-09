@@ -6,7 +6,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SettingsView extends StatefulWidget {
   static const String routeName = '/settings';
+
   SettingsView();
+
   final data = GetStorage();
 
   @override
@@ -23,45 +25,44 @@ class _SettingsView extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: SettingsList(
-        sections: [
-          SettingsSection(
-            titlePadding: EdgeInsets.all(20),
-            title: 'Push Notifications',
-            tiles: [
-              SettingsTile.switchTile(
-                title: 'Twitch',
-                switchValue: widget.data.read('twitchSwitch'),
-                onToggle: (value) {
-                  setState(() {
-                    widget.data.write('twitchSwitch', value);
-                    if (widget.data.read('twitchSwitch') == true)
-                      messaging.subscribeToTopic('twitch');
-                    else if (widget.data.read('twitchSwitch') == false)
-                      messaging.unsubscribeFromTopic('twitch');
-                  });
-                }),
-              SettingsTile.switchTile(
-                title: 'YouTube',
-                switchValue: widget.data.read('youtubeSwitch'),
-                onToggle: (value) {
-                  setState(() {
-                    widget.data.write('youtubeSwitch', value);
-                    if (widget.data.read('youtubeSwitch') == true)
-                      messaging.subscribeToTopic('youtube');
-                    else if (widget.data.read('youtubeSwitch') == false)
-                      messaging.unsubscribeFromTopic('youtube');
-                  });
-                },
-              )
-            ],
-          ),
-        ],
-      ),
-      drawer: createDrawer(context)
-    );
+        appBar: AppBar(
+          title: const Text('Settings'),
+        ),
+        body: SettingsList(
+          sections: [
+            SettingsSection(
+              titlePadding: EdgeInsets.all(20),
+              title: 'Push Notifications',
+              tiles: [
+                SettingsTile.switchTile(
+                    title: 'Twitch',
+                    switchValue: widget.data.read('twitchSwitch'),
+                    onToggle: (value) {
+                      setState(() {
+                        widget.data.write('twitchSwitch', value);
+                        if (widget.data.read('twitchSwitch') == true)
+                          messaging.subscribeToTopic('twitch');
+                        else if (widget.data.read('twitchSwitch') == false)
+                          messaging.unsubscribeFromTopic('twitch');
+                      });
+                    }),
+                SettingsTile.switchTile(
+                  title: 'YouTube',
+                  switchValue: widget.data.read('youtubeSwitch'),
+                  onToggle: (value) {
+                    setState(() {
+                      widget.data.write('youtubeSwitch', value);
+                      if (widget.data.read('youtubeSwitch') == true)
+                        messaging.subscribeToTopic('youtube');
+                      else if (widget.data.read('youtubeSwitch') == false)
+                        messaging.unsubscribeFromTopic('youtube');
+                    });
+                  },
+                )
+              ],
+            ),
+          ],
+        ),
+        drawer: createDrawer(context));
   }
 }

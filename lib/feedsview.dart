@@ -5,7 +5,6 @@ import 'feeditems.dart';
 class FeedsView extends StatelessWidget {
   static const String routeName = '/feeds';
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -14,7 +13,6 @@ class FeedsView extends StatelessWidget {
               title: const Text('Feeds'),
             ),
             body: FeedItems(),
-            drawer: createDrawer(context)
-        ));
+            drawer: createDrawer(context)));
   }
 }

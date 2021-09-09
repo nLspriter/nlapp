@@ -19,24 +19,22 @@ void main() async {
       throw "Could not launch ";
   });
 
+  FirebaseMessaging.instance.getInitialMessage().then((message) async {
+    if (await canLaunch(message!.data['url']))
+      await launch(message.data['url']);
+    else
+      throw "Could not launch ";
+  });
+
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true, // Required to display a heads up notification
     badge: true,
     sound: true,
   );
   runApp(MyApp());
-  FirebaseMessaging.instance.getInitialMessage().then((message) async {
-    if (await canLaunch(message!.data['url']))
-      await launch(message.data['url']);
-    else
-      throw "Could not launch ";
-    }
-  );
 }
 
 class MyApp extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -72,4 +70,3 @@ ThemeData _createThemeDark() {
     fontFamily: 'Sans-serif',
   );
 }
-

@@ -46,6 +46,7 @@ flutter_icons:
   image_path: "images/newlegacyinc_launcher.png"
   android: true
   ios: true
+  remove_alpha_ios: true
 
 # The following section is specific to Flutter.
 flutter:

@@ -32,22 +32,13 @@ void main() async {
     sound: true,
   );
 
-  NotificationSettings settings =
-      await FirebaseMessaging.instance.requestPermission(
+  await FirebaseMessaging.instance.requestPermission(
     alert: true,
     announcement: true,
     badge: true,
     sound: true,
     provisional: true,
   );
-
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print('User granted permission');
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('User granted provisional permission');
-  } else {
-    print('User declined or has not accepted permission');
-  }
 
   runApp(MyApp());
 }
@@ -73,8 +64,6 @@ ThemeData _createTheme() {
   return ThemeData(
     brightness: Brightness.light,
     primaryColor: Color(0xFF162955),
-    colorScheme:
-        _createTheme().colorScheme.copyWith(secondary: Color(0xFF4F628E)),
     canvasColor: Colors.white,
     fontFamily: 'Sans-serif',
   );
@@ -84,8 +73,6 @@ ThemeData _createThemeDark() {
   return ThemeData(
     brightness: Brightness.dark,
     primaryColor: Color(0xFF4F628E),
-    colorScheme:
-        _createTheme().colorScheme.copyWith(secondary: Color(0xFF4F628E)),
     canvasColor: Colors.grey[900],
     fontFamily: 'Sans-serif',
   );

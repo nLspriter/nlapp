@@ -10,7 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nlapp/config.dart';
 
 void main() async {
-  Config.appFlavor = Flavor.RELEASE;
+  Config.appFlavor = Flavor.DEVELOPMENT;
   await GetStorage.init();
   GetStorage().writeIfNull('twitchSwitch', true);
   GetStorage().writeIfNull('youtubeSwitch', true);

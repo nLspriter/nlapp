@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:nlapp/config.dart';
 
 class FeedItems extends StatefulWidget {
   final List<String> items = [
@@ -47,12 +48,12 @@ class FeedItems extends StatefulWidget {
 }
 
 class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
-  late FirebaseMessaging messaging;
-  String? notificationText;
+  FirebaseMessaging messaging;
+  String notificationText;
 
   Future<String> fetchData() async {
     var response = await http
-        .get(Uri.parse('https://nl-app-server.herokuapp.com/status'));
+        .get(Uri.parse(Config.serverURL));
     if (response.statusCode == 201) {
       this.setState(() {
         widget.itemText['Twitch'] = jsonDecode(response.body)['stream_status'];
@@ -83,13 +84,13 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
     else if (widget.data.read('youtubeSwitch') == false)
       messaging.unsubscribeFromTopic('youtube');
 
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

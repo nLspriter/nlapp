@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'drawer.dart';
+import 'package:nlapp/drawer.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -18,7 +18,7 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsView extends State<SettingsView> {
-  late FirebaseMessaging messaging = FirebaseMessaging.instance;
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   @override
   Widget build(BuildContext context) {

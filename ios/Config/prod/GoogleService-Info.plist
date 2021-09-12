@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1061978312341-ul4ptct9dhd7kcsl0sfn8skhligmucgj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1061978312341-ul4ptct9dhd7kcsl0sfn8skhligmucgj</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCASzKXo7ElvGGoM36UQYhMYJNoZtHPqUY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1061978312341</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.sprite.nlapp</string>
+	<key>PROJECT_ID</key>
+	<string>nl-notification-server</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nl-notification-server.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1061978312341:ios:5fe1d87b07356fece1159c</string>
+	<key>DATABASE_URL</key>
+	<string>https://nl-notification-server-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

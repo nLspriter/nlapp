@@ -109,7 +109,8 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
               child: GestureDetector(
                 child: Container(
-                    height: 80,
+                    constraints: BoxConstraints(
+                        minHeight: 80, minWidth: double.infinity),
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.centerLeft,

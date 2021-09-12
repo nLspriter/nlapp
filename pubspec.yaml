@@ -43,12 +43,12 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
-  image_path: "images/newlegacyinc_launcher.png"
+  image_path: "assets/images/newlegacyinc_launcher.png"
   android: true
   ios: true
   remove_alpha_ios: true
-  adaptive_icon_background: "images/newlegacyinc_icon_background.png"
-  adaptive_icon_foreground: "images/newlegacyinc_icon_foreground.png"
+  adaptive_icon_background: "assets/images/newlegacyinc_icon_background.png"
+  adaptive_icon_foreground: "assets/images/newlegacyinc_icon_foreground.png"
 
 # The following section is specific to Flutter.
 flutter:
@@ -60,13 +60,13 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/discord.png
-    - images/instagram.png
-    - images/twitch.png
-    - images/twitter.png
-    - images/youtube.png
-    - images/newlegacyinc_launcher.png
-    - images/newlegacyinc_logo.png
+    - assets/images/discord.png
+    - assets/images/instagram.png
+    - assets/images/twitch.png
+    - assets/images/twitter.png
+    - assets/images/youtube.png
+    - assets/images/newlegacyinc_launcher.png
+    - assets/images/newlegacyinc_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

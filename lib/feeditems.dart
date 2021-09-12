@@ -15,11 +15,11 @@ class FeedItems extends StatefulWidget {
     'Discord',
   ];
   final Map<String, String> itemImage = {
-    'Twitch': 'images/twitch.png',
-    'YouTube': 'images/youtube.png',
-    'Twitter': 'images/twitter.png',
-    'Instagram': 'images/instagram.png',
-    'Discord': 'images/discord.png',
+    'Twitch': 'assets/images/twitch.png',
+    'YouTube': 'assets/images/youtube.png',
+    'Twitter': 'assets/images/twitter.png',
+    'Instagram': 'assets/images/instagram.png',
+    'Discord': 'assets/images/discord.png',
   };
   final Map<String, String> itemText = {
     'Twitch': 'Offline',

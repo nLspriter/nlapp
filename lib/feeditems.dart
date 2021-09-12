@@ -175,7 +175,9 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
                         .read('itemURL')[widget.items[index]]
                         .toString());
                   else
-                    throw "Could not launch ";
+                    throw "Could not launch ${widget.data
+                        .read('itemURL')[widget.items[index]]
+                        .toString()}";
                 },
               ));
         },

@@ -13,8 +13,6 @@ class SettingsView extends StatefulWidget {
 
   @override
   _SettingsView createState() {
-    data.writeIfNull('twitchSwitch', true);
-    data.writeIfNull('youtubeSwitch', true);
     return _SettingsView();
   }
 }

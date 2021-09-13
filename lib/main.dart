@@ -78,6 +78,7 @@ class MyApp extends StatelessWidget {
       theme: _createTheme(),
       themeMode: ThemeMode.system,
       darkTheme: _createThemeDark(),
+      debugShowCheckedModeBanner: false,
       home: FeedsView(),
       routes: {
         routes.feeds: (context) => FeedsView(),

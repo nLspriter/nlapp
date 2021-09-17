@@ -33,6 +33,19 @@ class _SettingsView extends State<SettingsView> {
               title: 'Push Notifications',
               tiles: [
                 SettingsTile.switchTile(
+                    title: 'Announcements',
+                    switchValue: widget.data.read('announcementSwitch'),
+                    onToggle: (value) {
+                      setState(() {
+                        widget.data.write('announcementSwitch', value);
+                        if (widget.data.read('announcementSwitch') == true)
+                          messaging.subscribeToTopic('announcement');
+                        else if (widget.data.read('announcementSwitch') ==
+                            false)
+                          messaging.unsubscribeFromTopic('announcement');
+                      });
+                    }),
+                SettingsTile.switchTile(
                     title: 'Twitch',
                     switchValue: widget.data.read('twitchSwitch'),
                     onToggle: (value) {
@@ -45,18 +58,17 @@ class _SettingsView extends State<SettingsView> {
                       });
                     }),
                 SettingsTile.switchTile(
-                  title: 'YouTube',
-                  switchValue: widget.data.read('youtubeSwitch'),
-                  onToggle: (value) {
-                    setState(() {
-                      widget.data.write('youtubeSwitch', value);
-                      if (widget.data.read('youtubeSwitch') == true)
-                        messaging.subscribeToTopic('youtube');
-                      else if (widget.data.read('youtubeSwitch') == false)
-                        messaging.unsubscribeFromTopic('youtube');
-                    });
-                  },
-                )
+                    title: 'YouTube',
+                    switchValue: widget.data.read('youtubeSwitch'),
+                    onToggle: (value) {
+                      setState(() {
+                        widget.data.write('youtubeSwitch', value);
+                        if (widget.data.read('youtubeSwitch') == true)
+                          messaging.subscribeToTopic('youtube');
+                        else if (widget.data.read('youtubeSwitch') == false)
+                          messaging.unsubscribeFromTopic('youtube');
+                      });
+                    })
               ],
             ),
           ],

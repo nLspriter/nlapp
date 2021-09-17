@@ -12,10 +12,28 @@ import 'package:nlapp/config.dart';
 void main() async {
   Config.appFlavor = Flavor.DEVELOPMENT;
   await GetStorage.init();
+  GetStorage().writeIfNull('announcementSwitch', true);
   GetStorage().writeIfNull('twitchSwitch', true);
   GetStorage().writeIfNull('youtubeSwitch', true);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  if (GetStorage().read('announcementSwitch') == true)
+    messaging.subscribeToTopic('announcement');
+  else if (GetStorage().read('announcementSwitch') == false)
+    messaging.unsubscribeFromTopic('announcement');
+
+  if (GetStorage().read('twitchSwitch') == true)
+    messaging.subscribeToTopic('twitch');
+  else if (GetStorage().read('twitchSwitch') == false)
+    messaging.unsubscribeFromTopic('twitch');
+
+  if (GetStorage().read('youtubeSwitch') == true)
+    messaging.subscribeToTopic('youtube');
+  else if (GetStorage().read('youtubeSwitch') == false)
+    messaging.unsubscribeFromTopic('youtube');
 
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id

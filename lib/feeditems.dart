@@ -52,8 +52,7 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
   String notificationText;
 
   Future<String> fetchData() async {
-    var response = await http
-        .get(Uri.parse(Config.serverURL));
+    var response = await http.get(Uri.parse(Config.serverURL));
     if (response.statusCode == 201) {
       this.setState(() {
         widget.itemText['Twitch'] = jsonDecode(response.body)['stream_status'];
@@ -72,17 +71,6 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
   @override
   void initState() {
     fetchData();
-    messaging = FirebaseMessaging.instance;
-
-    if (widget.data.read('twitchSwitch') == true)
-      messaging.subscribeToTopic('twitch');
-    else if (widget.data.read('twitchSwitch') == false)
-      messaging.unsubscribeFromTopic('twitch');
-
-    if (widget.data.read('youtubeSwitch') == true)
-      messaging.subscribeToTopic('youtube');
-    else if (widget.data.read('youtubeSwitch') == false)
-      messaging.unsubscribeFromTopic('youtube');
 
     WidgetsBinding.instance.addObserver(this);
     super.initState();
@@ -156,7 +144,6 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
                                             .toString(),
                                         style: TextStyle(
                                           color: Colors.white,
-
                                         ),
                                       ),
                                     ],
@@ -176,9 +163,7 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
                         .read('itemURL')[widget.items[index]]
                         .toString());
                   else
-                    throw "Could not launch ${widget.data
-                        .read('itemURL')[widget.items[index]]
-                        .toString()}";
+                    throw "Could not launch ${widget.data.read('itemURL')[widget.items[index]].toString()}";
                 },
               ));
         },

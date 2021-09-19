@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:quiver/collection.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:nlapp/drawer.dart';
 import 'dart:convert';
+import 'package:share_plus/share_plus.dart';
+import 'package:path_provider/path_provider.dart';
 
 class SoundboardView extends StatefulWidget {
   static const String routeName = '/soundboard';
@@ -35,9 +39,6 @@ class _SoundboardView extends State<SoundboardView> {
       this.setState(() {
         widget.soundList.add(file[0].trim(), file[1].trim());
       });
-    });
-    widget.soundList.forEach((key, value) {
-      print('[$key->$value]');
     });
   }
 
@@ -109,6 +110,14 @@ class _SoundboardView extends State<SoundboardView> {
                               )),
                           onTap: () {
                             audioCache.play('sounds/$name - ${list[index]}');
+                          },
+                          onLongPress: () async {
+                            final ByteData bytes = await rootBundle.load('assets/sounds/$name - ${list[index]}');
+                            final Uint8List uintlist = bytes.buffer.asUint8List();
+                            final tempDir = await getTemporaryDirectory();
+                            final file = await new File('${tempDir.path}/$name - ${list[index]}').create();
+                            file.writeAsBytesSync(uintlist);
+                            Share.shareFiles(['${file.path}']);
                           },
                         ));
                   },

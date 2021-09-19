@@ -132,6 +132,9 @@ class _SoundboardView extends State<SoundboardView> {
           child: Text(
             "Stop",
             textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+            )
           ),
           backgroundColor: Color(0xFF061539),
         ),

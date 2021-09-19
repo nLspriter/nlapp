@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nlapp/drawer.dart';
-import 'package:nlapp/feeditems.dart';
+import 'package:nlapp/pages/feed/feeditems.dart';
 
 class FeedsView extends StatelessWidget {
   static const String routeName = '/feeds';

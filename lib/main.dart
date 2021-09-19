@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nlapp/routes/routes.dart';
-import 'package:nlapp/feedsview.dart';
-import 'package:nlapp/settingsview.dart';
+import 'package:nlapp/pages/feed/feedsview.dart';
+import 'package:nlapp/pages/settings/settingsview.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:nlapp/config.dart';
 
 void main() async {
-  Config.appFlavor = Flavor.DEVELOPMENT;
+  Config.appFlavor = Flavor.RELEASE;
   await GetStorage.init();
   GetStorage().writeIfNull('announcementSwitch', true);
   GetStorage().writeIfNull('twitchSwitch', true);

@@ -25,6 +25,12 @@ Widget createDrawer(BuildContext context) {
             Navigator.popAndPushNamed(context, routes.feeds);
           }),
       ListTile(
+          leading: Icon(Icons.play_arrow),
+          title: Text('Soundboard'),
+          onTap: () {
+            Navigator.popAndPushNamed(context, routes.soundboard);
+          }),
+      ListTile(
           leading: Icon(Icons.settings),
           title: Text('Settings'),
           onTap: () {

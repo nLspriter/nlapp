@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nlapp/routes/routes.dart';
-import 'package:nlapp/feedsview.dart';
-import 'package:nlapp/settingsview.dart';
+import 'package:nlapp/pages/feed/feedsview.dart';
+import 'package:nlapp/pages/settings/settingsview.dart';
+import 'package:nlapp/pages/soundboard/soundboardview.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -100,6 +101,7 @@ class MyApp extends StatelessWidget {
       routes: {
         routes.feeds: (context) => FeedsView(),
         routes.settings: (context) => SettingsView(),
+        routes.soundboard: (context) => SoundboardView(),
       },
     );
   }

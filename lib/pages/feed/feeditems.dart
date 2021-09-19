@@ -71,7 +71,6 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
   @override
   void initState() {
     fetchData();
-
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -121,6 +120,7 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
                         ),
                         Expanded(
                           child: Container(
+                            padding: const EdgeInsets.only(top: 12, bottom:12),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,

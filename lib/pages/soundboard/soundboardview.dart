@@ -46,7 +46,9 @@ class _SoundboardView extends State<SoundboardView> {
     _listAssets(context);
 
     if (Platform.isIOS) {
-      audioCache.fixedPlayer.notificationService.startHeadlessService();
+      if (audioCache.fixedPlayer != null) {
+        audioCache.fixedPlayer.startHeadlessService();
+      }
     }
     super.initState();
   }
@@ -104,7 +106,7 @@ class _SoundboardView extends State<SoundboardView> {
                                 ],
                               )),
                           onTap: () {
-                            audioCache.play('sounds/$name - ${list[index]}', isLocal: true);
+                            audioCache.play('sounds/$name - ${list[index]}');
                           },
                           onLongPress: () async {
                             final ByteData bytes = await rootBundle.load('assets/sounds/$name - ${list[index]}');

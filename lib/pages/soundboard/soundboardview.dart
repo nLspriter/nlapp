@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/collection.dart';
@@ -46,10 +45,6 @@ class _SoundboardView extends State<SoundboardView> {
   void initState() {
     _listAssets(context);
 
-    if (kIsWeb) {
-      // Calls to Platform.isIOS fails on web
-      return;
-    }
     if (Platform.isIOS) {
       audioCache.fixedPlayer.notificationService.startHeadlessService();
     }
@@ -109,7 +104,7 @@ class _SoundboardView extends State<SoundboardView> {
                                 ],
                               )),
                           onTap: () {
-                            audioCache.play('sounds/$name - ${list[index]}');
+                            audioCache.play('sounds/$name - ${list[index]}', isLocal: true);
                           },
                           onLongPress: () async {
                             final ByteData bytes = await rootBundle.load('assets/sounds/$name - ${list[index]}');

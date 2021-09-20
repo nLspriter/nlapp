@@ -4,11 +4,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/collection.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:nlapp/drawer.dart';
 import 'dart:convert';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:just_audio/just_audio.dart';
 
 class SoundboardView extends StatefulWidget {
   static const String routeName = '/soundboard';
@@ -21,8 +21,7 @@ class SoundboardView extends StatefulWidget {
 }
 
 class _SoundboardView extends State<SoundboardView> {
-  static AudioPlayer audioPlayer = AudioPlayer();
-  static AudioCache audioCache = AudioCache(fixedPlayer: audioPlayer, prefix: 'assets/sounds/');
+  AudioPlayer player;
 
   Future _listAssets(BuildContext context) async {
     final manifestContent =
@@ -44,14 +43,14 @@ class _SoundboardView extends State<SoundboardView> {
   @override
   void initState() {
     _listAssets(context);
-
-    if (Platform.isIOS) {
-      audioCache.play('Konami - Triangle Lancer.mp3');
-      if (audioCache.fixedPlayer != null) {
-        audioCache.fixedPlayer.notificationService.startHeadlessService();
-      }
-    }
+    player = AudioPlayer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 
   @override
@@ -106,8 +105,9 @@ class _SoundboardView extends State<SoundboardView> {
                                       ))
                                 ],
                               )),
-                          onTap: () {
-                            audioCache.play('$name - ${list[index]}');
+                          onTap: () async {
+                            await player.setAsset('assets/sounds/$name - ${list[index]}');
+                            await player.play();
                           },
                           onLongPress: () async {
                             final ByteData bytes = await rootBundle.load('assets/sounds/$name - ${list[index]}');
@@ -125,7 +125,7 @@ class _SoundboardView extends State<SoundboardView> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            audioPlayer.stop();
+            player.stop();
           },
           child: Text(
             "Stop",

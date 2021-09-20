@@ -21,8 +21,8 @@ class SoundboardView extends StatefulWidget {
 }
 
 class _SoundboardView extends State<SoundboardView> {
-  static AudioPlayer audioPlayer = AudioPlayer(playerId: 'soundboard');
-  AudioCache audioCache = AudioCache(fixedPlayer: audioPlayer);
+  static AudioPlayer audioPlayer = AudioPlayer();
+  static AudioCache audioCache = AudioCache(fixedPlayer: audioPlayer, prefix: 'assets/sounds/');
 
   Future _listAssets(BuildContext context) async {
     final manifestContent =
@@ -46,8 +46,9 @@ class _SoundboardView extends State<SoundboardView> {
     _listAssets(context);
 
     if (Platform.isIOS) {
+      audioCache.play('Konami - Triangle Lancer.mp3');
       if (audioCache.fixedPlayer != null) {
-        audioCache.fixedPlayer.startHeadlessService();
+        audioCache.fixedPlayer.notificationService.startHeadlessService();
       }
     }
     super.initState();
@@ -106,7 +107,7 @@ class _SoundboardView extends State<SoundboardView> {
                                 ],
                               )),
                           onTap: () {
-                            audioCache.play('sounds/$name - ${list[index]}');
+                            audioCache.play('$name - ${list[index]}');
                           },
                           onLongPress: () async {
                             final ByteData bytes = await rootBundle.load('assets/sounds/$name - ${list[index]}');

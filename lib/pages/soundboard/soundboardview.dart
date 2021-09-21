@@ -20,8 +20,9 @@ class SoundboardView extends StatefulWidget {
   }
 }
 
-class _SoundboardView extends State<SoundboardView> {
-  AudioPlayer player;
+class _SoundboardView extends State<SoundboardView>
+    with WidgetsBindingObserver {
+  final player = AudioPlayer();
 
   Future _listAssets(BuildContext context) async {
     final manifestContent =
@@ -43,14 +44,22 @@ class _SoundboardView extends State<SoundboardView> {
   @override
   void initState() {
     _listAssets(context);
-    player = AudioPlayer();
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.addObserver(this);
     player.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      player.stop();
+    }
   }
 
   @override

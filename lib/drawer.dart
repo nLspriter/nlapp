@@ -15,26 +15,27 @@ Widget createDrawer(BuildContext context) {
           colors: <Color>[Color(0xFF061539), Color(0xFF4F628E)],
         )),
         child: DrawerHeader(
-          child: Image(image: AssetImage('assets/images/newlegacyinc_logo.png')),
+          child:
+              Image(image: AssetImage('assets/images/newlegacyinc_logo.png')),
         ),
       ),
       ListTile(
           leading: Icon(Icons.feed),
           title: Text('Feeds'),
           onTap: () {
-            Navigator.popAndPushNamed(context, routes.feeds);
+            Navigator.pushReplacementNamed(context, routes.feeds);
           }),
       ListTile(
           leading: Icon(Icons.play_arrow),
           title: Text('Soundboard'),
           onTap: () {
-            Navigator.popAndPushNamed(context, routes.soundboard);
+            Navigator.pushReplacementNamed(context, routes.soundboard);
           }),
       ListTile(
           leading: Icon(Icons.settings),
           title: Text('Settings'),
           onTap: () {
-            Navigator.popAndPushNamed(context, routes.settings);
+            Navigator.pushReplacementNamed(context, routes.settings);
           }),
     ],
   ));

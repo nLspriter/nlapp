@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nlapp/routes/routes.dart';
 import 'package:nlapp/pages/feed/feedsview.dart';
 import 'package:nlapp/pages/settings/settingsview.dart';
+import 'package:nlapp/pages/soundboard/soundboardview.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -43,10 +44,11 @@ void main() async {
   );
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
@@ -69,7 +71,8 @@ void main() async {
     sound: true,
   );
 
-  NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+  NotificationSettings settings =
+      await FirebaseMessaging.instance.requestPermission(
     alert: true,
     announcement: true,
     badge: true,
@@ -101,6 +104,7 @@ class MyApp extends StatelessWidget {
       routes: {
         routes.feeds: (context) => FeedsView(),
         routes.settings: (context) => SettingsView(),
+        routes.soundboard: (context) => SoundboardView(),
       },
     );
   }

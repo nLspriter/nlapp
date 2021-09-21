@@ -79,45 +79,52 @@ class _SoundboardView extends State<SoundboardView> {
                   itemBuilder: (context, index) {
                     return Padding(
                         padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-                        child: GestureDetector(
-                          child: Container(
-                              constraints: BoxConstraints(minHeight: 80),
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: <Color>[
-                                      Color(0xFF061539),
-                                      Color(0xFF4F628E)
+                        child: Ink(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: <Color>[
+                                    Color(0xFF061539),
+                                    Color(0xFF4F628E)
+                                  ],
+                                ),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12))),
+                            child: InkWell(
+                              child: Container(
+                                  constraints: BoxConstraints(minHeight: 80),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(list[index].split('.mp3')[0],
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                          ))
                                     ],
-                                  ),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12))),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(list[index].split('.mp3')[0],
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ))
-                                ],
-                              )),
-                          onTap: () async {
-                            await player.setAsset('assets/sounds/$name - ${list[index]}');
-                            await player.play();
-                          },
-                          onLongPress: () async {
-                            final ByteData bytes = await rootBundle.load('assets/sounds/$name - ${list[index]}');
-                            final Uint8List uintlist = bytes.buffer.asUint8List();
-                            final tempDir = await getTemporaryDirectory();
-                            final file = await new File('${tempDir.path}/$name - ${list[index]}').create();
-                            file.writeAsBytesSync(uintlist);
-                            Share.shareFiles(['${file.path}']);
-                          },
-                        ));
+                                  )),
+                              onTap: () async {
+                                await player.setAsset(
+                                    'assets/sounds/$name - ${list[index]}');
+                                await player.play();
+                              },
+                              onLongPress: () async {
+                                final ByteData bytes = await rootBundle.load(
+                                    'assets/sounds/$name - ${list[index]}');
+                                final Uint8List uintlist =
+                                    bytes.buffer.asUint8List();
+                                final tempDir = await getTemporaryDirectory();
+                                final file = await new File(
+                                        '${tempDir.path}/$name - ${list[index]}')
+                                    .create();
+                                file.writeAsBytesSync(uintlist);
+                                Share.shareFiles(['${file.path}']);
+                              },
+                            )));
                   },
                   itemCount: list.length,
                 ));
@@ -127,13 +134,11 @@ class _SoundboardView extends State<SoundboardView> {
           onPressed: () {
             player.stop();
           },
-          child: Text(
-            "Stop",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-            )
-          ),
+          child: Text("Stop",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              )),
           backgroundColor: Color(0xFF061539),
         ),
       ),

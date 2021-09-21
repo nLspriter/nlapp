@@ -95,77 +95,82 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
         itemBuilder: (context, index) {
           return Padding(
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-              child: GestureDetector(
-                child: Container(
-                    constraints: BoxConstraints(
-                        minHeight: 80, minWidth: double.infinity),
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: <Color>[Color(0xFF061539), Color(0xFF4F628E)],
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(12))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12, right: 12),
-                          child: Image.asset(
-                            widget.itemImage[widget.items[index]].toString(),
-                            width: 42,
-                            height: 42,
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.only(top: 12, bottom:12),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                RichText(
-                                  text: TextSpan(
-                                    style: DefaultTextStyle.of(context).style,
-                                    children: [
-                                      TextSpan(
-                                        text: '${widget.items[index]}\n',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: widget.data
-                                            .read(
-                                                'itemText')[widget.items[index]]
-                                            .toString(),
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+              child: Ink(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: <Color>[Color(0xFF061539), Color(0xFF4F628E)],
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12))),
+                  child: InkWell(
+                    child: Container(
+                        constraints: BoxConstraints(
+                            minHeight: 80, minWidth: double.infinity),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 12, right: 12),
+                              child: Image.asset(
+                                widget.itemImage[widget.items[index]]
+                                    .toString(),
+                                width: 42,
+                                height: 42,
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
-                    )),
-                onTap: () async {
-                  if (await canLaunch(widget.data
-                      .read('itemURL')[widget.items[index]]
-                      .toString()))
-                    await launch(widget.data
-                        .read('itemURL')[widget.items[index]]
-                        .toString());
-                  else
-                    throw "Could not launch ${widget.data.read('itemURL')[widget.items[index]].toString()}";
-                },
-              ));
+                            Expanded(
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.only(top: 12, bottom: 12),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    RichText(
+                                      text: TextSpan(
+                                        style:
+                                            DefaultTextStyle.of(context).style,
+                                        children: [
+                                          TextSpan(
+                                            text: '${widget.items[index]}\n',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: widget.data
+                                                .read('itemText')[
+                                                    widget.items[index]]
+                                                .toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                    onTap: () async {
+                      if (await canLaunch(widget.data
+                          .read('itemURL')[widget.items[index]]
+                          .toString()))
+                        await launch(widget.data
+                            .read('itemURL')[widget.items[index]]
+                            .toString());
+                      else
+                        throw "Could not launch ${widget.data.read('itemURL')[widget.items[index]].toString()}";
+                    },
+                  )));
         },
         itemCount: widget.items.length,
       ),

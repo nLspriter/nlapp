@@ -131,16 +131,23 @@ class _SoundboardView extends State<SoundboardView> {
           }),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            player.stop();
-          },
-          child: Text("Stop",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-              )),
-          backgroundColor: Color(0xFF061539),
-        ),
+            onPressed: () {
+              player.stop();
+            },
+            child: Container(
+              child: Text("Stop",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[Color(0xFF061539), Color(0xFF4F628E)],
+                  )),
+            )),
       ),
     ));
   }

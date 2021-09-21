@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
-
 enum Flavor {
   DEVELOPMENT,
   RELEASE,
 }
 
 class Config {
-
   static Flavor appFlavor;
 
   static String get serverURL {

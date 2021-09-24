@@ -6,18 +6,15 @@ Widget createDrawer(BuildContext context) {
   return Drawer(
       child: ListView(
     padding: EdgeInsets.zero,
-    children: <Widget>[
-      Container(
+    children: [
+      const DrawerHeader(
         decoration: BoxDecoration(
             gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[Color(0xFF061539), Color(0xFF4F628E)],
         )),
-        child: DrawerHeader(
-          child:
-              Image(image: AssetImage('assets/images/newlegacyinc_logo.png')),
-        ),
+        child: Image(image: AssetImage('assets/images/newlegacyinc_logo.png')),
       ),
       ListTile(
           leading: Icon(Icons.feed),

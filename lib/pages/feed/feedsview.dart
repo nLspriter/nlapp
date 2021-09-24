@@ -10,6 +10,7 @@ class FeedsView extends StatelessWidget {
     return Container(
         child: Scaffold(
             appBar: AppBar(
+              backgroundColor: Theme.of(context).primaryColor,
               title: const Text('Feeds'),
             ),
             body: FeedItems(),

@@ -9,6 +9,8 @@ import Flutter
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     
+    let controller = window.rootViewController as! FlutterViewController
+    
     let flavorChannel = FlutterMethodChannel(
         name: "flavor",
         binaryMessenger: controller.binaryMessenger)

@@ -55,5 +55,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>App - Flavor</key>
+	<string>$(APP_FLAVOR)</string>
 </dict>
 </plist>

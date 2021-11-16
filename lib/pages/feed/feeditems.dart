@@ -14,13 +14,15 @@ class FeedItems extends StatefulWidget {
     'YouTube',
     'Twitter',
     'Instagram',
-    'Discord',
+    'TikTok',
+    'Discord'
   ];
   final Map<String, String> itemImage = {
     'Twitch': 'assets/images/twitch.png',
     'YouTube': 'assets/images/youtube.png',
     'Twitter': 'assets/images/twitter.png',
     'Instagram': 'assets/images/instagram.png',
+    'TikTok': 'assets/images/tiktok.png',
     'Discord': 'assets/images/discord.png',
   };
   final Map<String, String> itemText = {
@@ -28,13 +30,15 @@ class FeedItems extends StatefulWidget {
     'YouTube': 'Latest Video',
     'Twitter': 'Follow us and get the latest updates',
     'Instagram': 'Check out our photos',
-    'Discord': 'Join the community',
+    'TikTok': 'Watch some of our clips',
+    'Discord': 'Join the community'
   };
   final Map<String, String> itemURL = {
     'Twitch': 'https://www.twitch.tv/newlegacyinc',
     'YouTube': 'https://www.youtube.com/newlegacyinc',
     'Twitter': 'https://www.twitter.com/newlegacyinc',
     'Instagram': 'https://www.instagram.com/newlegacygram',
+    'TikTok': 'https://www.tiktok.com/@newlegacyinc',
     'Discord': 'https://www.discord.gg/newlegacyinc',
   };
 

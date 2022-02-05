@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/rendering.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_storage/get_storage.dart';
@@ -60,14 +59,17 @@ class _FeedItems extends State<FeedItems> with WidgetsBindingObserver {
     final flavor = await _getFlavorSettings();
     var response = await http.get(Uri.parse(flavor.apiBaseUrl));
     if (response.statusCode == 201) {
-      this.setState(() {
-        widget.itemText['Twitch'] = jsonDecode(response.body)['stream_status'];
-        widget.itemURL['YouTube'] = 'https:///www.youtube.com/watch?v=' +
-            jsonDecode(response.body)['video_id'];
-        widget.itemText['YouTube'] = jsonDecode(response.body)['video_title'];
-        widget.data.write('itemText', widget.itemText);
-        widget.data.write('itemURL', widget.itemURL);
-      });
+      if (mounted) {
+        this.setState(() {
+          widget.itemText['Twitch'] =
+              jsonDecode(response.body)['stream_status'];
+          widget.itemURL['YouTube'] = 'https:///www.youtube.com/watch?v=' +
+              jsonDecode(response.body)['video_id'];
+          widget.itemText['YouTube'] = jsonDecode(response.body)['video_title'];
+          widget.data.write('itemText', widget.itemText);
+          widget.data.write('itemURL', widget.itemURL);
+        });
+      }
       return 'Data loaded';
     } else {
       return 'Data not loaded';

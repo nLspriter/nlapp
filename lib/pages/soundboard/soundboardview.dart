@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quiver/collection.dart';
 import 'package:nlapp/drawer.dart';
+// import 'package:download_assets/download_assets.dart';
 import 'dart:convert';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -66,104 +67,157 @@ class _SoundboardView extends State<SoundboardView>
   Widget build(BuildContext context) {
     return Container(
         child: DefaultTabController(
-      length: widget.soundList.length,
+      length: widget.soundList.length + 1,
       child: Scaffold(
-        drawer: createDrawer(context),
-        appBar: AppBar(
-          title: const Text('Soundboard'),
-          bottom: new TabBar(
-            isScrollable: true,
-            tabs: List<Widget>.generate(widget.soundList.length, (int index) {
-              return new Tab(text: widget.soundList.keys.elementAt(index));
+          drawer: createDrawer(context),
+          appBar: AppBar(
+            title: const Text('Soundboard'),
+            bottom: new TabBar(
+              isScrollable: true,
+              tabs: List<Widget>.generate(widget.soundList.length, (int index) {
+                // if (index == 0) {
+                //   return new Tab(text: "Download");
+                // } else {
+                return new Tab(
+                    text: widget.soundList.keys.elementAt(index - 1));
+                // }
+              }),
+            ),
+          ),
+          body: TabBarView(
+            children:
+                List<Widget>.generate(widget.soundList.length, (int index) {
+              // if (index == 0) {
+              //   return new Container(
+              //       width: 50,
+              //       child: ListView.builder(
+              //         itemBuilder: (context, index) {
+              //           return Padding(
+              //               padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+              //               child: Ink(
+              //                   decoration: BoxDecoration(
+              //                       gradient: LinearGradient(
+              //                         begin: Alignment.centerLeft,
+              //                         end: Alignment.centerRight,
+              //                         colors: <Color>[
+              //                           Color(0xFF061539),
+              //                           Color(0xFF4F628E)
+              //                         ],
+              //                       ),
+              //                       borderRadius:
+              //                           BorderRadius.all(Radius.circular(12))),
+              //                   child: InkWell(
+              //                     child: Container(
+              //                         constraints:
+              //                             BoxConstraints(minHeight: 80),
+              //                         child: Row(
+              //                           mainAxisAlignment:
+              //                               MainAxisAlignment.center,
+              //                           crossAxisAlignment:
+              //                               CrossAxisAlignment.center,
+              //                           children: <Widget>[
+              //                             Text('Download Pack',
+              //                                 style: TextStyle(
+              //                                   color: Colors.white,
+              //                                   fontSize: 20,
+              //                                   fontWeight: FontWeight.bold,
+              //                                 ))
+              //                           ],
+              //                         )),
+              //                     // onTap: () async {
+              //                     //   await player.setAsset(
+              //                     //       'assets/sounds/$name - ${list[index]}');
+              //                     //   await player.play();
+              //                     // },
+              //                     // onLongPress: () async {
+              //                     //   final ByteData bytes = await rootBundle.load(
+              //                     //       'assets/sounds/$name - ${list[index]}');
+              //                     //   final Uint8List uintlist =
+              //                     //       bytes.buffer.asUint8List();
+              //                     //   final tempDir = await getTemporaryDirectory();
+              //                     //   final file = await new File(
+              //                     //           '${tempDir.path}/$name - ${list[index]}')
+              //                     //       .create();
+              //                     //   file.writeAsBytesSync(uintlist);
+              //                     //   Share.shareFiles(['${file.path}']);
+              //                     // },
+              //                   )));
+              //         },
+              //         itemCount: 1,
+              //       ));
+              // } else {
+              var name = widget.soundList.keys.elementAt(index - 1);
+              var list = widget.soundList[name].toList();
+              return new Container(
+                  width: 50,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                          child: Ink(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: <Color>[
+                                      Color(0xFF061539),
+                                      Color(0xFF4F628E)
+                                    ],
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12))),
+                              child: InkWell(
+                                child: Container(
+                                    constraints: BoxConstraints(minHeight: 80),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(list[index].split('.mp3')[0],
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ))
+                                      ],
+                                    )),
+                                onTap: () async {
+                                  await player.setAsset(
+                                      'assets/sounds/$name - ${list[index]}');
+                                  await player.play();
+                                },
+                                onLongPress: () async {
+                                  final ByteData bytes = await rootBundle.load(
+                                      'assets/sounds/$name - ${list[index]}');
+                                  final Uint8List uintlist =
+                                      bytes.buffer.asUint8List();
+                                  final tempDir = await getTemporaryDirectory();
+                                  final file = await new File(
+                                          '${tempDir.path}/$name - ${list[index]}')
+                                      .create();
+                                  file.writeAsBytesSync(uintlist);
+                                  Share.shareFiles(['${file.path}']);
+                                },
+                              )));
+                    },
+                    itemCount: list.length,
+                  ));
+              // }
             }),
           ),
-        ),
-        body: TabBarView(
-          children: List<Widget>.generate(widget.soundList.length, (int index) {
-            var name = widget.soundList.keys.elementAt(index);
-            var list = widget.soundList[name].toList();
-            return new Container(
-                width: 50,
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
-                        child: Ink(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: <Color>[
-                                    Color(0xFF061539),
-                                    Color(0xFF4F628E)
-                                  ],
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12))),
-                            child: InkWell(
-                              child: Container(
-                                  constraints: BoxConstraints(minHeight: 80),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(list[index].split('.mp3')[0],
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ))
-                                    ],
-                                  )),
-                              onTap: () async {
-                                await player.setAsset(
-                                    'assets/sounds/$name - ${list[index]}');
-                                await player.play();
-                              },
-                              onLongPress: () async {
-                                final ByteData bytes = await rootBundle.load(
-                                    'assets/sounds/$name - ${list[index]}');
-                                final Uint8List uintlist =
-                                    bytes.buffer.asUint8List();
-                                final tempDir = await getTemporaryDirectory();
-                                final file = await new File(
-                                        '${tempDir.path}/$name - ${list[index]}')
-                                    .create();
-                                file.writeAsBytesSync(uintlist);
-                                Share.shareFiles(['${file.path}']);
-                              },
-                            )));
-                  },
-                  itemCount: list.length,
-                ));
-          }),
-        ),
-        floatingActionButton: Ink(
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: <Color>[Color(0xFF061539), Color(0xFF4F628E)],
-                )),
-            child: InkResponse(
-              child: Container(
-                height: 70,
-                width: 70,
-                child: Center(
-                    child: Text("Stop",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ))),
+          floatingActionButton: FloatingActionButton(
+              child: Icon(
+                Icons.stop,
+                color: Colors.white,
               ),
-              onTap: () {
-                player.stop();
-              },
-            )),
-      ),
+              backgroundColor: Color(0xFF061539),
+              onPressed: () {
+                setState(() {
+                  player.stop();
+                });
+              })),
     ));
   }
 }

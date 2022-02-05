@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:nlapp/routes/routes.dart';
 import 'package:nlapp/pages/feed/feedsview.dart';
 import 'package:nlapp/pages/settings/settingsview.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nlapp/pages/feed/feeds.dart';
 import 'package:nlapp/pages/settings/settings.dart';
 import 'package:nlapp/pages/soundboard/sounds.dart';
@@ -73,36 +74,46 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        backgroundColor: Colors.grey[900],
-        title: Container(
-          height: 50,
-          margin: const EdgeInsets.all(5.0),
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/images/newlegacyinc_logo.png"),
-                fit: BoxFit.contain),
-          ),
-        ),
-        centerTitle: true,
-      ),
+      appBar: MediaQuery.of(context).orientation == Orientation.landscape
+          ? null
+          : AppBar(
+              elevation: 1,
+              backgroundColor: Colors.grey[900],
+              title: Container(
+                height: 50,
+                margin: const EdgeInsets.all(5.0),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/newlegacyinc_logo.png"),
+                      fit: BoxFit.contain),
+                ),
+              ),
+              centerTitle: true,
+            ),
       body: listOfItems(),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.grey[900],
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildBottomIconButton(Icons.home, _iconColor[0], 0, 'Feed'),
-            buildBottomIconButton(
-                Icons.volume_up, _iconColor[1], 1, 'Soundboard'),
-            buildBottomIconButton(
-                Icons.personal_video, _iconColor[2], 2, 'Videos'),
-            buildBottomIconButton(Icons.settings, _iconColor[3], 3, 'Settings'),
-          ],
-        ),
-      ),
+      bottomNavigationBar: MediaQuery.of(context).orientation ==
+              Orientation.landscape
+          ? null
+          : BottomAppBar(
+              color: Colors.grey[900],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  buildBottomIconButton(Icons.home, _iconColor[0], 0, 'Feed'),
+                  buildBottomIconButton(
+                      Icons.volume_up, _iconColor[1], 1, 'Soundboard'),
+                  buildBottomIconButton(
+                      Icons.personal_video, _iconColor[2], 2, 'Videos'),
+                  buildBottomIconButton(
+                      Icons.settings, _iconColor[3], 3, 'Settings'),
+                ],
+              ),
+            ),
     );
   }
 
@@ -239,6 +250,12 @@ class _HomeScreenState extends State<HomeScreen> {
             child: YoutubePlayerBuilder(
               player: YoutubePlayer(
                 controller: Provider.of<ProviderData>(context).controller,
+                bottomActions: [
+                  CurrentPosition(),
+                  ProgressBar(isExpanded: true),
+                  RemainingDuration(),
+                  PlaybackSpeedButton()
+                ],
               ),
               builder: (context, player) {
                 return Column(
@@ -357,6 +374,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               ))),
                     ]);
               },
+              onEnterFullScreen: () =>
+                  Provider.of<ProviderData>(context, listen: false)
+                      .changeFullscreen(true),
+              onExitFullScreen: () =>
+                  Provider.of<ProviderData>(context, listen: false)
+                      .changeFullscreen(false),
             ),
             visible: Provider.of<ProviderData>(context).isVisible,
           )
@@ -386,7 +409,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _launchUrl(String id) async {
-    if (!await launchUrl(Uri.parse('https://www.youtube.com/watch?v=$id'))) {
+    if (!await launchUrl(Uri.parse('https://www.youtube.com/watch?v=$id'),
+        mode: LaunchMode.externalApplication)) {
       throw 'Could not launch ${'https://www.youtube.com/watch?v=$id'}';
     }
   }

@@ -108,7 +108,7 @@ class Feed extends StatelessWidget {
   }
 
   Future<void> _launchUrl() async {
-    if (!await launchUrl(this.url)) {
+    if (!await launchUrl(this.url, mode: LaunchMode.externalApplication)) {
       throw 'Could not launch ${this.url}';
     }
   }

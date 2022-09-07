@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:provider/provider.dart';
 import 'package:nlapp/provider_data_class.dart';
@@ -108,12 +107,5 @@ class Video extends StatelessWidget {
           overflow: TextOverflow.clip,
           style: TextStyle(color: Colors.white),
         ));
-  }
-
-  Future<void> _launchUrl() async {
-    if (!await launchUrl(
-        Uri.parse('https://www.youtube.com/watch?v=${this.id}'))) {
-      throw 'Could not launch ${'https://www.youtube.com/watch?v=${this.id}'}';
-    }
   }
 }

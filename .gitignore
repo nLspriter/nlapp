@@ -49,3 +49,4 @@ app.*.map.json
 /ios/config/dev/googleservice-info.plist
 /ios/config/prod/googleservice-info.plist
 /assets/sounds
+/android/app/upload-keystore.jks

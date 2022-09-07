@@ -20,4 +20,9 @@ class ProviderData extends ChangeNotifier {
     isVisible = visible;
     notifyListeners();
   }
+
+  void changeFullscreen(bool fullscreen) {
+    isFullscreen = fullscreen;
+    notifyListeners();
+  }
 }

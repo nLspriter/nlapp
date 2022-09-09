@@ -63,13 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Colors.white
   ];
 
-  Future<List> _futureVideos;
-
   @override
   void initState() {
     listAssets();
     super.initState();
-    _futureVideos = fetchVideos();
   }
 
   @override
@@ -228,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
               color: Colors.grey[700],
               child: FutureBuilder(
-                  future: _futureVideos,
+                  future: fetchVideos(),
                   builder: (ctx, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
@@ -369,7 +366,43 @@ class _HomeScreenState extends State<HomeScreen> {
                                       )
                                     ],
                                   ),
-                                  Divider()
+                                  Divider(
+                                    color: Color.fromARGB(0, 0, 0, 0),
+                                    height: 8,
+                                  ),
+                                  Divider(
+                                    height: 1,
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                        color: Colors.grey[700],
+                                        child: FutureBuilder(
+                                            future: fetchVideos(),
+                                            builder: (ctx, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.done) {
+                                                if (snapshot.hasData) {
+                                                  return ListView.separated(
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return videos[index];
+                                                    },
+                                                    separatorBuilder:
+                                                        (BuildContext context,
+                                                                int index) =>
+                                                            Divider(
+                                                      height: 0,
+                                                    ),
+                                                    itemCount: videos.length,
+                                                  );
+                                                }
+                                              }
+                                              return Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            })),
+                                  )
                                 ],
                               ))),
                     ]);

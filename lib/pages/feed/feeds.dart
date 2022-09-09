@@ -11,7 +11,7 @@ String youtubeURL;
 
 Future<String> fetchData() async {
   final flavor = await _getFlavorSettings();
-  var response = await http.get(Uri.parse(flavor.apiBaseUrl));
+  var response = await http.get(Uri.parse('${flavor.apiBaseUrl}/status'));
   if (response.statusCode == 201) {
     twitchStatus = jsonDecode(response.body)['stream_status'];
     youtubeURL = 'https:///www.youtube.com/watch?v=' +

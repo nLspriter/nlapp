@@ -10,9 +10,14 @@ class ProviderData extends ChangeNotifier {
 
   void changeVideoSelected(Video video) {
     selectedVideo = video;
-    controller = YoutubePlayerController(
-        initialVideoId: selectedVideo.id,
-        flags: YoutubePlayerFlags(autoPlay: false));
+    if (isVisible) {
+      controller.cue(selectedVideo.id);
+    } else {
+      controller = YoutubePlayerController(
+          initialVideoId: selectedVideo.id,
+          flags: YoutubePlayerFlags(
+              hideThumbnail: true, autoPlay: false, enableCaption: false));
+    }
     notifyListeners();
   }
 

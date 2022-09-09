@@ -1,9 +1,7 @@
-/// Contains the hard-coded settings per flavor.
 class FlavorSettings {
   final String apiBaseUrl;
 
-  FlavorSettings.dev()
-      : apiBaseUrl = 'https://nl-app-server-dev.herokuapp.com/status';
+  FlavorSettings.dev() : apiBaseUrl = 'https://notify.newlegacyinc.tv';
 
-  FlavorSettings.prod() : apiBaseUrl = 'http://notify.newlegacyinc.tv/status';
+  FlavorSettings.prod() : apiBaseUrl = 'https://notify.newlegacyinc.tv';
 }

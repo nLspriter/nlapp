@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:provider/provider.dart';
 import 'package:nlapp/provider_data_class.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Video extends StatelessWidget {
   final String id;
@@ -47,36 +48,46 @@ class Video extends StatelessWidget {
     return Stack(children: [
       Padding(
         padding: EdgeInsets.all(10),
-        child: Image.network(this.thumbnailUrl, width: 150, fit: BoxFit.contain,
-            errorBuilder: (BuildContext context, Object exception,
-                StackTrace stackTrace) {
-          return Image.network(
-              'https://img.youtube.com/vi/${this.id}/sddefault.jpg',
+        child: CachedNetworkImage(
+          imageUrl: 'https://img.youtube.com/vi/${this.id}/maxresdefault.jpg',
+          fit: BoxFit.fitWidth,
+          height: 84.38,
+          width: 150,
+          errorWidget: (context, url, error) {
+            return CachedNetworkImage(
+              imageUrl: 'https://img.youtube.com/vi/${this.id}/sddefault.jpg',
+              fit: BoxFit.fitWidth,
               height: 84.38,
               width: 150,
-              fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                  Object exception, StackTrace stackTrace) {
-            return Image.network(
-                'https://img.youtube.com/vi/${this.id}/hqdefault.jpg',
-                height: 84.38,
-                width: 150,
-                fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                    Object exception, StackTrace stackTrace) {
-              return Image.network(
-                  'https://img.youtube.com/vi/${this.id}/mqdefault.jpg',
+              errorWidget: (context, url, error) {
+                return CachedNetworkImage(
+                  imageUrl:
+                      'https://img.youtube.com/vi/${this.id}/hqdefault.jpg',
+                  fit: BoxFit.fitWidth,
                   height: 84.38,
                   width: 150,
-                  fit: BoxFit.cover, errorBuilder: (BuildContext context,
-                      Object exception, StackTrace stackTrace) {
-                return Image.network(
-                    'https://img.youtube.com/vi/${this.id}/default.jpg',
-                    height: 84.38,
-                    width: 150,
-                    fit: BoxFit.cover);
-              });
-            });
-          });
-        }),
+                  errorWidget: (context, url, error) {
+                    return CachedNetworkImage(
+                        imageUrl:
+                            'https://img.youtube.com/vi/${this.id}/mqdefault.jpg',
+                        fit: BoxFit.fitWidth,
+                        height: 84.38,
+                        width: 150,
+                        errorWidget: (context, url, error) {
+                          return CachedNetworkImage(
+                            imageUrl:
+                                'https://img.youtube.com/vi/${this.id}/default.jpg',
+                            fit: BoxFit.fitWidth,
+                            height: 84.38,
+                            width: 150,
+                          );
+                        });
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
       // Positioned(
       //   bottom: 12,

@@ -7,6 +7,7 @@ class ProviderData extends ChangeNotifier {
   YoutubePlayerController controller;
   bool isVisible = false;
   bool isFullscreen = false;
+  String searchTerm = '';
 
   void changeVideoSelected(Video video) {
     selectedVideo = video;
@@ -28,6 +29,11 @@ class ProviderData extends ChangeNotifier {
 
   void changeFullscreen(bool fullscreen) {
     isFullscreen = fullscreen;
+    notifyListeners();
+  }
+
+  void changeSearchTerm(String term) {
+    searchTerm = term;
     notifyListeners();
   }
 }

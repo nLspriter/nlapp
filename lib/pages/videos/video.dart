@@ -26,6 +26,8 @@ class Video extends StatelessWidget {
         Provider.of<ProviderData>(context, listen: false)
             .changeVideoSelected(this);
         Provider.of<ProviderData>(context, listen: false).changeVisbility(true);
+        Provider.of<ProviderData>(context, listen: false)
+            .changeSearchTerm(this.title.split(' - ')[0]);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -52,7 +54,28 @@ class Video extends StatelessWidget {
               'https://img.youtube.com/vi/${this.id}/sddefault.jpg',
               height: 84.38,
               width: 150,
-              fit: BoxFit.cover);
+              fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                  Object exception, StackTrace stackTrace) {
+            return Image.network(
+                'https://img.youtube.com/vi/${this.id}/hqdefault.jpg',
+                height: 84.38,
+                width: 150,
+                fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                    Object exception, StackTrace stackTrace) {
+              return Image.network(
+                  'https://img.youtube.com/vi/${this.id}/mqdefault.jpg',
+                  height: 84.38,
+                  width: 150,
+                  fit: BoxFit.cover, errorBuilder: (BuildContext context,
+                      Object exception, StackTrace stackTrace) {
+                return Image.network(
+                    'https://img.youtube.com/vi/${this.id}/default.jpg',
+                    height: 84.38,
+                    width: 150,
+                    fit: BoxFit.cover);
+              });
+            });
+          });
         }),
       ),
       // Positioned(

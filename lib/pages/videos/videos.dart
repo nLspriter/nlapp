@@ -8,8 +8,8 @@ String id;
 String title;
 String thumbnailUrl;
 DateTime date;
+List videos;
 
-List videos = [];
 Future<FlavorSettings> _getFlavorSettings() async {
   String flavor =
       await const MethodChannel('flavor').invokeMethod<String>('getFlavor');
@@ -25,6 +25,7 @@ Future<FlavorSettings> _getFlavorSettings() async {
 
 Future<List> fetchVideos() async {
   final flavor = await _getFlavorSettings();
+  videos = [];
   var response =
       await http.get(Uri.parse('${flavor.apiBaseUrl}/youtube-library'));
   if (response.statusCode == 201) {

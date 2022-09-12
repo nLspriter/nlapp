@@ -51,7 +51,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int page = 0;
   List<Color> _iconColor = [
     Colors.blue,
@@ -64,8 +64,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     listAssets();
-    super.initState();
     _fetchVideos = fetchVideos();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _fetchVideos = fetchVideos();
+    }
   }
 
   @override
@@ -223,7 +236,11 @@ class _HomeScreenState extends State<HomeScreen> {
         return Stack(children: [
           RefreshIndicator(
             child: videoList(_fetchVideos, videos),
-            onRefresh: () => _fetchVideos = fetchVideos(),
+            onRefresh: () async {
+              setState(() {
+                _fetchVideos = fetchVideos();
+              });
+            },
           ),
           Visibility(
             child: videoPlayer(context),

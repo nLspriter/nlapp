@@ -33,6 +33,7 @@ class ProviderData extends ChangeNotifier {
   }
 
   void changeSearchTerm(String term) {
+    term = term.split('nL ')[term.split('nL ').length - 1];
     searchTerm = term;
     notifyListeners();
   }

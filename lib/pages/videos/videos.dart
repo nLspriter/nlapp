@@ -29,10 +29,8 @@ Future<List> fetchVideos() async {
   var response =
       await http.get(Uri.parse('${flavor.apiBaseUrl}/youtube-library'));
   if (response.statusCode == 201) {
-    print("Fetching Data");
     var data = jsonDecode(response.body);
     for (var x in data) {
-      print("Adding ${x["details"]["title"]}");
       id = x["id"];
       title = x["details"]["title"];
       thumbnailUrl = x["details"]["thumbnail"];
@@ -44,7 +42,6 @@ Future<List> fetchVideos() async {
           duration: "0:00",
           timestamp: DateTime(date.year, date.month, date.day)));
     }
-    // videos.length = data.length;
   }
   return videos;
 }

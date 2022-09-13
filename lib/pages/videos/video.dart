@@ -29,6 +29,11 @@ class Video extends StatelessWidget {
         Provider.of<ProviderData>(context, listen: false).changeVisbility(true);
         Provider.of<ProviderData>(context, listen: false)
             .changeSearchTerm(this.title.split(' - ')[0]);
+
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
       },
       child: Container(
         decoration: BoxDecoration(

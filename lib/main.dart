@@ -265,6 +265,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     PopupMenuItem<int>(
                       value: 1,
                       child: Text('Oldest'),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 2,
+                      child: Text('Liked'),
                     )
                   ],
                 ),
@@ -325,10 +329,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void onTimeSelected(BuildContext context, int item) {
     switch (item) {
       case 0:
+        results = videos;
         results.sort((a, b) => b.timestamp.compareTo(a.timestamp));
         break;
       case 1:
+        results = videos;
         results.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+        break;
+      case 2:
+        results = favorites;
         break;
     }
   }

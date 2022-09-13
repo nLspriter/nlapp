@@ -10,6 +10,7 @@ String thumbnailUrl;
 DateTime date;
 List videos = [];
 List results = [];
+List favorites = [];
 
 Future<FlavorSettings> _getFlavorSettings() async {
   String flavor =

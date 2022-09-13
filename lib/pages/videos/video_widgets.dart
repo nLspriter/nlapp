@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nlapp/pages/videos/video.dart';
 import 'package:nlapp/pages/videos/videos.dart';
 import 'package:nlapp/provider_data_class.dart';
 import 'package:provider/provider.dart';
@@ -76,7 +77,7 @@ Widget videoPlayer(BuildContext context) {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 14))),
                         Divider(),
-                        actionButtons(context),
+                        ActionButtons(),
                         Divider(
                           color: Color.fromARGB(0, 0, 0, 0),
                           height: 8,
@@ -106,81 +107,138 @@ Widget videoPlayer(BuildContext context) {
   );
 }
 
-Widget actionButtons(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      GestureDetector(
-        onTap: () {
-          Provider.of<ProviderData>(context, listen: false)
-              .changeVisbility(false);
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FaIcon(FontAwesomeIcons.circleArrowLeft, color: Colors.white),
-            SizedBox(
-              height: 6,
-            ),
-            Text(
-              "Return",
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ],
+class ActionButtons extends StatefulWidget {
+  ActionButtons({Key key}) : super(key: key);
+
+  @override
+  _ActionButtonsState createState() => _ActionButtonsState();
+}
+
+class _ActionButtonsState extends State<ActionButtons>
+    with WidgetsBindingObserver {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Provider.of<ProviderData>(context, listen: false)
+                .changeVisbility(false);
+          },
+          child: Container(
+              width: MediaQuery.of(context).size.width / 4,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FaIcon(FontAwesomeIcons.circleArrowLeft, color: Colors.white),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Text(
+                    "Return",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              )),
         ),
-      ),
-      GestureDetector(
-        onTap: () {
-          Share.share(
-              'https://www.youtube.com/watch?v=${Provider.of<ProviderData>(context, listen: false).selectedVideo.id}');
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FaIcon(FontAwesomeIcons.share, color: Colors.white),
-            SizedBox(
-              height: 6,
-            ),
-            Text(
-              "Share",
-              style: TextStyle(
-                color: Colors.white,
+        GestureDetector(
+            onTap: () {
+              Share.share(
+                  'https://www.youtube.com/watch?v=${Provider.of<ProviderData>(context, listen: false).selectedVideo.id}');
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width / 4,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FaIcon(FontAwesomeIcons.share, color: Colors.white),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Text(
+                    "Share",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          _launchUrl(Provider.of<ProviderData>(context, listen: false)
-              .selectedVideo
-              .id);
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FaIcon(FontAwesomeIcons.youtube, color: Colors.white),
-            SizedBox(
-              height: 6,
-            ),
-            Text(
-              "YouTube",
-              style: TextStyle(
-                color: Colors.white,
+            )),
+        GestureDetector(
+            onTap: () {
+              addToFavorites(Provider.of<ProviderData>(context, listen: false)
+                  .selectedVideo);
+              setState(() {});
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width / 4,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FaIcon(
+                      favorites.contains(
+                              Provider.of<ProviderData>(context).selectedVideo)
+                          ? FontAwesomeIcons.solidStar
+                          : FontAwesomeIcons.star,
+                      color: Colors.white),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Text(
+                    favorites.contains(
+                            Provider.of<ProviderData>(context).selectedVideo)
+                        ? 'Liked'
+                        : 'Like',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      )
-    ],
-  );
+            )),
+        GestureDetector(
+            onTap: () {
+              _launchUrl(Provider.of<ProviderData>(context, listen: false)
+                  .selectedVideo
+                  .id);
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width / 4,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FaIcon(FontAwesomeIcons.youtube, color: Colors.white),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Text(
+                    "YouTube",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ))
+      ],
+    );
+  }
 }
 
 Future<void> _launchUrl(String id) async {
   if (!await launchUrl(Uri.parse('https://www.youtube.com/watch?v=$id'),
       mode: LaunchMode.externalApplication)) {
     throw 'Could not launch ${'https://www.youtube.com/watch?v=$id'}';
+  }
+}
+
+void addToFavorites(Video video) {
+  if (favorites.contains(video)) {
+    favorites.remove(video);
+  } else {
+    favorites.add(video);
   }
 }

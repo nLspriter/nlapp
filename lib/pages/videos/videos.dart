@@ -9,6 +9,7 @@ String title;
 String thumbnailUrl;
 DateTime date;
 List videos = [];
+List results = [];
 
 Future<FlavorSettings> _getFlavorSettings() async {
   String flavor =
@@ -43,5 +44,6 @@ Future<List> fetchVideos() async {
           timestamp: DateTime(date.year, date.month, date.day)));
     }
   }
-  return videos;
+  results = videos;
+  return results;
 }

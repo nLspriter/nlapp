@@ -10,6 +10,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:nlapp/firebase.dart';
 import 'package:nlapp/provider_data_class.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() async {
   await GetStorage.init();
@@ -166,25 +167,32 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       case 0:
         return Container(
             color: Colors.grey[700],
-            child: FutureBuilder(
-                future: fetchData(),
-                builder: (ctx, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      return ListView.separated(
-                        itemBuilder: (BuildContext context, int index) {
-                          return feeds[index];
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(
-                          height: 0,
-                        ),
-                        itemCount: feeds.length,
-                      );
+            child: RefreshIndicator(
+              child: FutureBuilder(
+                  future: fetchData(),
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        return ListView.separated(
+                          itemBuilder: (BuildContext context, int index) {
+                            return feeds[index];
+                          },
+                          separatorBuilder: (BuildContext context, int index) =>
+                              Divider(
+                            height: 0,
+                          ),
+                          itemCount: feeds.length,
+                        );
+                      }
                     }
-                  }
-                  return Center(child: CircularProgressIndicator());
-                }));
+                    return Center(child: CircularProgressIndicator());
+                  }),
+              onRefresh: () async {
+                setState(() {
+                  fetchData();
+                });
+              },
+            ));
 
         break;
       case 1:
@@ -234,14 +242,55 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         break;
       case 2:
         return Stack(children: [
-          RefreshIndicator(
-            child: videoList(_fetchVideos, videos),
-            onRefresh: () async {
-              setState(() {
-                _fetchVideos = fetchVideos();
-              });
-            },
-          ),
+          Scaffold(
+              appBar: AppBar(
+                titleSpacing: 0,
+                toolbarHeight: 50.0,
+                backgroundColor: Colors.grey[800],
+                leading: PopupMenuButton<int>(
+                  icon: FaIcon(
+                    FontAwesomeIcons.filter,
+                    color: Colors.white,
+                  ),
+                  onSelected: (value) => {
+                    setState(() {
+                      onTimeSelected(context, value);
+                    })
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem<int>(
+                      value: 0,
+                      child: Text('Newest'),
+                    ),
+                    PopupMenuItem<int>(
+                      value: 1,
+                      child: Text('Oldest'),
+                    )
+                  ],
+                ),
+                title: TextField(
+                  onChanged: (value) {
+                    setState(() {
+                      results = videos
+                          .where((element) => element.title.contains(value))
+                          .toList();
+                    });
+                  },
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: InputBorder.none,
+                      hintText: 'Search'),
+                ),
+              ),
+              body: RefreshIndicator(
+                child: videoList(_fetchVideos, results),
+                onRefresh: () async {
+                  setState(() {
+                    _fetchVideos = fetchVideos();
+                  });
+                },
+              )),
           Visibility(
             child: videoPlayer(context),
             visible: Provider.of<ProviderData>(context).isVisible,
@@ -267,6 +316,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           color: Colors.white,
           child: Text('Loading...'),
         );
+        break;
+    }
+  }
+
+  void onTimeSelected(BuildContext context, int item) {
+    switch (item) {
+      case 0:
+        results.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+        break;
+      case 1:
+        results.sort((a, b) => a.timestamp.compareTo(b.timestamp));
         break;
     }
   }

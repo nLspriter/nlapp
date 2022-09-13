@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:share_plus/share_plus.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget videoList(Future<List> list, List videoType) {
   return Container(
@@ -122,7 +123,7 @@ Widget actionButtons(BuildContext context) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.arrow_back, color: Colors.white),
+            FaIcon(FontAwesomeIcons.circleArrowLeft, color: Colors.white),
             SizedBox(
               height: 6,
             ),
@@ -143,7 +144,7 @@ Widget actionButtons(BuildContext context) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.share, color: Colors.white),
+            FaIcon(FontAwesomeIcons.share, color: Colors.white),
             SizedBox(
               height: 6,
             ),
@@ -165,7 +166,7 @@ Widget actionButtons(BuildContext context) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.play_circle, color: Colors.white),
+            FaIcon(FontAwesomeIcons.youtube, color: Colors.white),
             SizedBox(
               height: 6,
             ),

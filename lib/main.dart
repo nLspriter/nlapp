@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nlapp/pages/feed/feeds.dart';
-import 'package:nlapp/pages/settings/settings.dart';
-import 'package:nlapp/pages/soundboard/sounds.dart';
-import 'package:nlapp/pages/soundboard/sound.dart';
+import 'package:nlapp/pages/feed/feed_page.dart';
+import 'package:nlapp/pages/settings/setting_page.dart';
+import 'package:nlapp/pages/soundboard/sound_page.dart';
 import 'package:nlapp/pages/videos/video_page.dart';
-import 'package:nlapp/pages/videos/videos.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nlapp/firebase.dart';
 import 'package:nlapp/provider_data_class.dart';
@@ -61,11 +59,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     Colors.white
   ];
   Future<List> _fetchVideos;
+  Future<List> _fetchData;
 
   @override
   void initState() {
     listAssets();
     _fetchVideos = fetchVideos();
+    _fetchData = fetchData();
     super.initState();
   }
 
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
             color: Colors.grey[700],
             child: RefreshIndicator(
               child: FutureBuilder(
-                  future: fetchData(),
+                  future: _fetchData,
                   builder: (ctx, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
@@ -189,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   }),
               onRefresh: () async {
                 setState(() {
-                  fetchData();
+                  _fetchData = fetchData();
                 });
               },
             ));
@@ -272,7 +272,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                   onChanged: (value) {
                     setState(() {
                       results = videos
-                          .where((element) => element.title.contains(value))
+                          .where((element) => element.title
+                              .toLowerCase()
+                              .contains(value.toLowerCase()))
                           .toList();
                     });
                   },

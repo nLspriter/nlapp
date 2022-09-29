@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:nlapp/pages/videos/video.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class ProviderData extends ChangeNotifier {
   Video selectedVideo;
   YoutubePlayerController controller;
   bool isVisible = false;
-  bool isFullscreen = false;
   String searchTerm = '';
+  String selectedSort = 'Newest';
+  int page = 0;
 
   void changeVideoSelected(Video video) {
     selectedVideo = video;
     if (isVisible) {
-      controller.cue(selectedVideo.id);
+      controller.cueVideoById(videoId: selectedVideo.id);
     } else {
       controller = YoutubePlayerController(
-          initialVideoId: selectedVideo.id,
-          flags: YoutubePlayerFlags(
-              hideThumbnail: true, autoPlay: false, enableCaption: false));
+          params: YoutubePlayerParams(
+        mute: false,
+        showControls: true,
+        showFullscreenButton: true,
+      ))
+        ..onInit = () {
+          controller.cueVideoById(videoId: selectedVideo.id);
+        };
     }
     notifyListeners();
   }
@@ -27,14 +33,19 @@ class ProviderData extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeFullscreen(bool fullscreen) {
-    isFullscreen = fullscreen;
+  void changePage(int number) {
+    page = number;
     notifyListeners();
   }
 
   void changeSearchTerm(String term) {
     term = term.split('nL ')[term.split('nL ').length - 1];
     searchTerm = term;
+    notifyListeners();
+  }
+
+  void changeSort(String selected) {
+    selectedSort = selected;
     notifyListeners();
   }
 }

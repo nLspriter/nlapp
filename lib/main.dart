@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:nlapp/pages/feed/feed_page.dart';
 import 'package:nlapp/pages/settings/setting_page.dart';
 import 'package:nlapp/pages/soundboard/sound_page.dart';
@@ -12,7 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() async {
   await GetStorage.init();
-  GetStorage().writeIfNull('announcementSwitch', true);
+  GetStorage().writeIfNull('announcementSwitch', false);
   GetStorage().writeIfNull('twitchSwitch', true);
   GetStorage().writeIfNull('youtubeSwitch', true);
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,9 +62,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    listAssets();
     _fetchVideos = fetchVideos();
     _fetchData = fetchData();
+    listAssets();
     super.initState();
   }
 
@@ -84,10 +83,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     return Scaffold(
       appBar: MediaQuery.of(context).orientation == Orientation.landscape
           ? null
@@ -116,9 +111,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                 children: [
                   buildBottomIconButton(Icons.home, _iconColor[0], 0, 'Feed'),
                   buildBottomIconButton(
-                      Icons.volume_up, _iconColor[1], 1, 'Soundboard'),
+                      Icons.personal_video, _iconColor[1], 1, 'Videos'),
                   buildBottomIconButton(
-                      Icons.personal_video, _iconColor[2], 2, 'Videos'),
+                      Icons.volume_up, _iconColor[2], 2, 'Soundboard'),
                   buildBottomIconButton(
                       Icons.settings, _iconColor[3], 3, 'Settings'),
                 ],
@@ -136,17 +131,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           color: color,
         ),
         onPressed: () {
-          if (page != pageNo)
-            setState(() {
-              page = pageNo;
-              for (var i = 0; i < _iconColor.length; i++) {
-                if (i == pageNo) {
-                  _iconColor[i] = Colors.blue;
-                } else {
-                  _iconColor[i] = Colors.white;
-                }
-              }
-            });
+          if (Provider.of<ProviderData>(context, listen: false).page != pageNo)
+            Provider.of<ProviderData>(context, listen: false)
+                .changeVisbility(false);
+          setState(() {
+            Provider.of<ProviderData>(context, listen: false)
+                .changePage(pageNo);
+          });
         },
       ),
       Padding(
@@ -163,7 +154,16 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   Widget listOfItems() {
-    switch (page) {
+    setState(() {
+      for (var i = 0; i < _iconColor.length; i++) {
+        if (i == Provider.of<ProviderData>(context).page) {
+          _iconColor[i] = Colors.blue;
+        } else {
+          _iconColor[i] = Colors.white;
+        }
+      }
+    });
+    switch (Provider.of<ProviderData>(context).page) {
       case 0:
         return Container(
             color: Colors.grey[700],
@@ -196,6 +196,64 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
         break;
       case 1:
+        return Stack(children: [
+          Visibility(
+            child: Scaffold(
+                appBar: AppBar(
+                  titleSpacing: 0,
+                  toolbarHeight: 50.0,
+                  backgroundColor: Colors.grey[800],
+                  leading: IconButton(
+                    icon: FaIcon(
+                      FontAwesomeIcons.filter,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return FilterDialog();
+                          });
+                    },
+                  ),
+                  title: TextField(
+                    textInputAction: TextInputAction.search,
+                    onChanged: (term) {
+                      setState(() {
+                        results = videos
+                            .where((element) => element.title
+                                .toLowerCase()
+                                .contains(term.toLowerCase()))
+                            .toList();
+                        onTimeSelected(
+                            Provider.of<ProviderData>(context, listen: false)
+                                .selectedSort);
+                      });
+                    },
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: InputBorder.none,
+                        hintText: 'Search'),
+                  ),
+                ),
+                body: RefreshIndicator(
+                  child: videoList(_fetchVideos, results),
+                  onRefresh: () async {
+                    setState(() {
+                      _fetchVideos = fetchVideos();
+                    });
+                  },
+                )),
+            visible: !Provider.of<ProviderData>(context).isVisible,
+          ),
+          Visibility(
+            child: videoPlayer(context),
+            visible: Provider.of<ProviderData>(context).isVisible,
+          )
+        ]);
+        break;
+      case 2:
         return Container(
           child: DefaultTabController(
             length: sounds.length,
@@ -240,69 +298,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           ),
         );
         break;
-      case 2:
-        return Stack(children: [
-          Scaffold(
-              appBar: AppBar(
-                titleSpacing: 0,
-                toolbarHeight: 50.0,
-                backgroundColor: Colors.grey[800],
-                leading: PopupMenuButton<int>(
-                  icon: FaIcon(
-                    FontAwesomeIcons.filter,
-                    color: Colors.white,
-                  ),
-                  onSelected: (value) => {
-                    setState(() {
-                      onTimeSelected(context, value);
-                    })
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem<int>(
-                      value: 0,
-                      child: Text('Newest'),
-                    ),
-                    PopupMenuItem<int>(
-                      value: 1,
-                      child: Text('Oldest'),
-                    ),
-                    PopupMenuItem<int>(
-                      value: 2,
-                      child: Text('Liked'),
-                    )
-                  ],
-                ),
-                title: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      results = videos
-                          .where((element) => element.title
-                              .toLowerCase()
-                              .contains(value.toLowerCase()))
-                          .toList();
-                    });
-                  },
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: InputBorder.none,
-                      hintText: 'Search'),
-                ),
-              ),
-              body: RefreshIndicator(
-                child: videoList(_fetchVideos, results),
-                onRefresh: () async {
-                  setState(() {
-                    _fetchVideos = fetchVideos();
-                  });
-                },
-              )),
-          Visibility(
-            child: videoPlayer(context),
-            visible: Provider.of<ProviderData>(context).isVisible,
-          )
-        ]);
-        break;
       case 3:
         return Container(
           color: Colors.grey[700],
@@ -318,26 +313,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         );
         break;
       default:
+        Provider.of<ProviderData>(context).changeVisbility(false);
         return Container(
           color: Colors.white,
           child: Text('Loading...'),
         );
-        break;
-    }
-  }
-
-  void onTimeSelected(BuildContext context, int item) {
-    switch (item) {
-      case 0:
-        results = videos;
-        results.sort((a, b) => b.timestamp.compareTo(a.timestamp));
-        break;
-      case 1:
-        results = videos;
-        results.sort((a, b) => a.timestamp.compareTo(b.timestamp));
-        break;
-      case 2:
-        results = favorites;
         break;
     }
   }

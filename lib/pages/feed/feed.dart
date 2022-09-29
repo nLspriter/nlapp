@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nlapp/pages/videos/video_page.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:nlapp/provider_data_class.dart';
+import 'package:provider/provider.dart';
 
 class Feed extends StatelessWidget {
   final String icon;
@@ -20,7 +23,26 @@ class Feed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: _launchUrl,
+        onTap: () {
+          if (this.name.toLowerCase() == 'youtube') {
+            try {
+              Provider.of<ProviderData>(context, listen: false).changePage(1);
+              var selectedVideo = videos
+                  .where(
+                      (video) => video.id == this.url.toString().split('=')[1])
+                  .toList()[0];
+              print(selectedVideo);
+              Provider.of<ProviderData>(context, listen: false)
+                  .changeVideoSelected(selectedVideo);
+              Provider.of<ProviderData>(context, listen: false)
+                  .changeVisbility(true);
+            } catch (exception) {
+              _launchUrl();
+            }
+          } else {
+            _launchUrl();
+          }
+        },
         child: Container(
           decoration: BoxDecoration(
               color: this.color,

@@ -147,4 +147,8 @@ class Video extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ));
   }
+
+  String getId() {
+    return this.id;
+  }
 }

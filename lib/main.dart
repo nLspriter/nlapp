@@ -134,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           if (Provider.of<ProviderData>(context, listen: false).page != pageNo)
             Provider.of<ProviderData>(context, listen: false)
                 .changeVisbility(false);
+          results = videos;
           setState(() {
             Provider.of<ProviderData>(context, listen: false)
                 .changePage(pageNo);

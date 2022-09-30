@@ -113,6 +113,7 @@ class _ActionButtonsState extends State<ActionButtons>
           onTap: () {
             Provider.of<ProviderData>(context, listen: false)
                 .changeVisbility(false);
+            results = videos;
           },
           child: Container(
               width: MediaQuery.of(context).size.width / 4,

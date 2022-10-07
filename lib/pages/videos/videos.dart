@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:nlapp/flavor.dart';
 import 'package:nlapp/pages/videos/video.dart';
 import 'package:http/http.dart' as http;
+import 'package:iso_duration_parser/iso_duration_parser.dart';
 
 String id;
 String title;
 String thumbnailUrl;
 DateTime date;
+String duration;
 List videos = [];
 List results = [];
 List likedVideos = [];
@@ -37,11 +39,17 @@ Future<List> fetchVideos() async {
       title = x["details"]["title"];
       thumbnailUrl = x["details"]["thumbnail"];
       date = DateTime.parse(x["details"]["publishedAt"]);
+      var dur = IsoDuration.parse(x["details"]["duration"]);
+      if (dur.hours > 0) {
+        duration = dur.format('{h}:{mm}:{ss}');
+      } else {
+        duration = dur.format('{mm}:{ss}');
+      }
       videos.add(Video(
           id: id,
           title: title,
           thumbnailUrl: thumbnailUrl,
-          duration: "0:00",
+          duration: duration,
           timestamp: DateTime(date.year, date.month, date.day)));
     }
   }

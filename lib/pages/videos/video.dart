@@ -94,18 +94,18 @@ class Video extends StatelessWidget {
           },
         ),
       ),
-      // Positioned(
-      //   bottom: 12,
-      //   right: 12,
-      //   child: Container(
-      //     padding: EdgeInsets.all(4),
-      //     color: Color.fromARGB(172, 0, 0, 0),
-      //     child: Text(
-      //       this.duration,
-      //       style: TextStyle(color: Colors.white, fontSize: 10),
-      //     ),
-      //   ),
-      // )
+      Positioned(
+        bottom: 12,
+        right: 12,
+        child: Container(
+          padding: EdgeInsets.all(4),
+          color: Color.fromARGB(172, 0, 0, 0),
+          child: Text(
+            this.duration,
+            style: TextStyle(color: Colors.white, fontSize: 10),
+          ),
+        ),
+      )
     ]);
   }
 

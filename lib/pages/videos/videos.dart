@@ -43,7 +43,7 @@ Future<List> fetchVideos() async {
       if (dur.hours > 0) {
         duration = dur.format('{h}:{mm}:{ss}');
       } else {
-        duration = dur.format('{mm}:{ss}');
+        duration = dur.format('{m}:{ss}');
       }
       videos.add(Video(
           id: id,

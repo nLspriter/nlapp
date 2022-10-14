@@ -1,13 +1,15 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/sprite/Downloads/flutter
-FLUTTER_APPLICATION_PATH=/Volumes/VMware Shared Folders/newLEGACYinc-App-2.0
+FLUTTER_ROOT=/Users/gabrielcastro/Documents/flutter
+FLUTTER_APPLICATION_PATH=/Users/gabrielcastro/Desktop/newLEGACYinc-App-2.0
 COCOAPODS_PARALLEL_CODE_SIGN=true
-FLUTTER_TARGET=lib/main.dart
+FLUTTER_TARGET=/Users/gabrielcastro/Desktop/newLEGACYinc-App-2.0/lib/main.dart
 FLUTTER_BUILD_DIR=build
-FLUTTER_BUILD_NAME=2.0.1
-FLUTTER_BUILD_NUMBER=11
+FLUTTER_BUILD_NAME=3.0.0
+FLUTTER_BUILD_NUMBER=16
 EXCLUDED_ARCHS[sdk=iphonesimulator*]=i386
+EXCLUDED_ARCHS[sdk=iphoneos*]=armv7
+DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ==
 DART_OBFUSCATION=false
-TRACK_WIDGET_CREATION=false
-TREE_SHAKE_ICONS=true
-PACKAGE_CONFIG=/Volumes/VMware Shared Folders/newLEGACYinc-App-2.0/.dart_tool/package_config.json
+TRACK_WIDGET_CREATION=true
+TREE_SHAKE_ICONS=false
+PACKAGE_CONFIG=/Users/gabrielcastro/Desktop/newLEGACYinc-App-2.0/.dart_tool/package_config.json

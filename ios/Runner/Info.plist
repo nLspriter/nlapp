@@ -57,5 +57,7 @@
 	</dict>
 	<key>App - Flavor</key>
 	<string>$(APP_FLAVOR)</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>

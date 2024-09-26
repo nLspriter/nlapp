@@ -29,14 +29,14 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.0'
+          
+      - name: Flutter Pub Get
+        run: flutter pub get
 
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
           cd ios && pod install --repo-update && cd ..
-
-      - name: Flutter Pub Get
-        run: flutter pub get
 
       - name: Clean Flutter project
         run: flutter clean

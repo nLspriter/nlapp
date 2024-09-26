@@ -15,10 +15,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install Rosetta (for Apple Silicon)
+        if: runner.os == 'macOS' && runner.arch == 'ARM64'
+        run: |
+          softwareupdate --install-rosetta --agree-to-license
+
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0' 
+          flutter-version: '3.24.0'
 
       - name: Set up Ruby for iOS build
         uses: ruby/setup-ruby@v1
@@ -28,10 +33,13 @@ jobs:
       - name: Install CocoaPods
         run: |
           sudo gem install cocoapods
-          cd ios && pod install && cd ..
+          cd ios && pod install --repo-update && cd ..
 
       - name: Flutter Pub Get
         run: flutter pub get
+
+      - name: Clean Flutter project
+        run: flutter clean
 
       - name: Build Android APK
         run: flutter build apk --release

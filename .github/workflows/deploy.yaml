@@ -18,7 +18,7 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          flutter-version: '3.24.0' 
 
       - name: Set up Ruby for iOS build
         uses: ruby/setup-ruby@v1
